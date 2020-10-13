@@ -1,5 +1,6 @@
 package com.dajie.luckyweather.logic
 
+import android.util.Log
 import androidx.lifecycle.liveData
 import com.dajie.luckyweather.logic.model.Place
 import com.dajie.luckyweather.logic.network.LuckyWeatherNetwork
@@ -16,7 +17,8 @@ object Repository {
     fun searchPlaces(query: String) = liveData(Dispatchers.IO) {
         val result = try {
             val placeResponse = LuckyWeatherNetwork.searchPlaces(query)
-            if(placeResponse.status == "OK"){
+            Log.e("Repository", "placeResponse------>$placeResponse")
+            if(placeResponse.status == "ok"){
                 val places = placeResponse.places
                 Result.success(places)
             }else{
