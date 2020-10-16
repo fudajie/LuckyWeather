@@ -2,6 +2,7 @@ package com.dajie.luckyweather
 
 import android.app.Application
 import android.content.Context
+import com.dajie.luckyweather.logic.network.ServiceCreator
 
 /**
 
