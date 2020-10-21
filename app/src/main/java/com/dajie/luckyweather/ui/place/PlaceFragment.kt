@@ -58,6 +58,7 @@ class PlaceFragment : Fragment() {
             }
         }
 
+
         viewModel.placeLiveData.observe(viewLifecycleOwner, Observer { result ->
             val places = result.getOrNull()
             if (places != null) {

@@ -13,7 +13,7 @@ import com.dajie.luckyweather.logic.model.Location
  */
 class WeatherViewModel : ViewModel() {
     private val locationLiveData = MutableLiveData<Location>()
-    var loationLng = ""
+    var locationLng = ""
     var locationLat = ""
     var placeName = ""
     val weatherLiveData = Transformations.switchMap(locationLiveData) { location ->

@@ -6,6 +6,7 @@ import com.dajie.luckyweather.logic.model.Place
 import com.dajie.luckyweather.logic.model.RealTimeResponse
 import com.dajie.luckyweather.logic.model.Weather
 import com.dajie.luckyweather.logic.network.LuckyWeatherNetwork
+import com.tianjian.loglibrary.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -44,9 +45,11 @@ object Repository {
                 }
                 val realTimeResponse = deferredRealTime.await()
                 val dailyResponse = deferredDaily.await()
+                Logger.e("realTimeResponse---------->$realTimeResponse")
+                Logger.e("dailyResponse---------->$dailyResponse")
                 if (realTimeResponse.status == "ok" && dailyResponse.status == "ok") {
                     val weather =
-                        Weather(realTimeResponse.result.realTime, dailyResponse.result.daily)
+                        Weather(realTimeResponse.result.realtime, dailyResponse.result.daily)
                     Result.success(weather)
                 } else {
                     Result.failure(RuntimeException("realtime response status is ${realTimeResponse.status}" + "daily response status is ${dailyResponse.status}"))

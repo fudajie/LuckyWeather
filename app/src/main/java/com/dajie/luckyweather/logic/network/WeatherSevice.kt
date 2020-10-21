@@ -16,9 +16,9 @@ interface WeatherSevice {
     @GET("v2.5/${MyApplication.TOKEN}/{lng},{lat}/realtime.json")
     fun getRealTimeWeather(
         @Path("lng") lng: String,
-        @Path("lng") lat: String
+        @Path("lat") lat: String
     ): Call<RealTimeResponse>
 
     @GET("v2.5/${MyApplication.TOKEN}/{lng},{lat}/daily.json")
-    fun getDailyWeather(@Path("lng") lng: String, @Path("lng") lat: String): Call<DailyResponse>
+    fun getDailyWeather(@Path("lng") lng: String, @Path("lat") lat: String): Call<DailyResponse>
 }

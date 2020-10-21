@@ -36,8 +36,13 @@ object LuckyWeatherNetwork {
 
                     override fun onResponse(call: Call<T>, response: Response<T>) {
                         val body = response.body()
-                        if (null != body) it.resume(body)
-                        else it.resumeWithException(RuntimeException("response body is null"))
+                        Logger.e("body------->$body")
+                        if (null != body) {
+                            it.resume(body)
+                        }
+                        else {
+                            it.resumeWithException(RuntimeException("response body is null"))
+                        }
                     }
 
                 }
