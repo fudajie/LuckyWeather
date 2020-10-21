@@ -4,14 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="530dp">
 
+    <!--     android:fitsSystemWindows="true" 给系统状态栏预留空间，因为当前系统状态栏被设置为透明和我们的布局一体 整体布局往上 加上这个就解决往上的问题-->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:fitsSystemWindows="true">
 
         <TextView
             android:id="@+id/placeName_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
     </FrameLayout>
 
     <LinearLayout
