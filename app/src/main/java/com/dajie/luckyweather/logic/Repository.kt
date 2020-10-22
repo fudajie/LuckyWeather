@@ -2,6 +2,7 @@ package com.dajie.luckyweather.logic
 
 import android.util.Log
 import androidx.lifecycle.liveData
+import com.dajie.luckyweather.logic.dao.PlaceDao
 import com.dajie.luckyweather.logic.model.Place
 import com.dajie.luckyweather.logic.model.RealTimeResponse
 import com.dajie.luckyweather.logic.model.Weather
@@ -18,6 +19,9 @@ import java.lang.RuntimeException
 
  */
 object Repository {
+    fun savePlace(place: Place) = PlaceDao.savePlace(place)
+    fun getSavedPlace() = PlaceDao.getSavedPlace()
+    fun isPlaceSaved() = PlaceDao.isPlaceSaved()
 
     fun searchPlaces(query: String) = liveData(Dispatchers.IO) {
         val result = try {

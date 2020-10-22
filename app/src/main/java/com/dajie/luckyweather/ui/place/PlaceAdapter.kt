@@ -1,4 +1,4 @@
-package com.sunnyweather.android.ui.place
+package com.dajie.luckyweather.ui.place
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dajie.luckyweather.R
 import com.dajie.luckyweather.logic.model.Place
-import com.dajie.luckyweather.logic.model.Weather
-import com.dajie.luckyweather.ui.place.PlaceFragment
 import com.dajie.luckyweather.ui.weather.WeatherActivity
 import com.tianjian.loglibrary.Logger
+import kotlinx.android.synthetic.main.activity_weather.*
 
-class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: List<Place>) : RecyclerView.Adapter<PlaceAdapter.ViewHolder>() {
+class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: List<Place>) :
+    RecyclerView.Adapter<PlaceAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val placeName: TextView = view.findViewById(R.id.placeName)
@@ -25,14 +25,24 @@ class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: L
         val holder = ViewHolder(view)
         holder.itemView.setOnClickListener {
             val position = holder.adapterPosition
-            Logger.e("position------->$position")
+            val activity = fragment.activity
             val place = placeList[position]
-            val intent = Intent(parent.context,WeatherActivity::class.java).apply {
-                putExtra("location_lng",place.location.lng)
-                putExtra("location_lat",place.location.lat)
-                putExtra("place_name",place.name)
+            if (activity is WeatherActivity) {
+                activity.drawerLayout.closeDrawers()
+                activity.viewModel.locationLat = place.location.lat
+                activity.viewModel.locationLng = place.location.lng
+                activity.viewModel.placeName = place.name
+                activity.refreshWeather()
+            } else {
+                val intent = Intent(parent.context, WeatherActivity::class.java).apply {
+                    putExtra("location_lng", place.location.lng)
+                    putExtra("location_lat", place.location.lat)
+                    putExtra("place_name", place.name)
+                }
+                fragment.startActivity(intent)
+                fragment.activity?.finish()
             }
-            fragment.startActivity(intent)
+            fragment.viewModel.savePlace(placeList[position])
         }
         return holder
     }

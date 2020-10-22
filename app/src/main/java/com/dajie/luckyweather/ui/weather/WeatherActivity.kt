@@ -1,13 +1,18 @@
 package com.dajie.luckyweather.ui.weather
 
+import android.content.Context
 import android.graphics.Color
+import android.inputmethodservice.InputMethodService
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dajie.luckyweather.R
@@ -56,11 +61,21 @@ class WeatherActivity : AppCompatActivity() {
                 it.exceptionOrNull()?.printStackTrace()
             }
 
-        })
+            swipeRefresh.isRefreshing = false
 
-        viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        })
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
+        refreshWeather()
+        swipeRefresh.setOnRefreshListener {
+            refreshWeather()
+        }
     }
 
+
+    fun refreshWeather() {
+        viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        swipeRefresh.isRefreshing = true
+    }
 
     private fun showWeatherInfo(weather: Weather) {
         //填充now布局的数据
@@ -102,6 +117,29 @@ class WeatherActivity : AppCompatActivity() {
         dressing_tv.text = lifeIndex.dressing[0].desc
         ultraviolet_tv.text = lifeIndex.ultraviolet[0].desc
         carWashing_tv.text = lifeIndex.carWashing[0].desc
+        nav_btn.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View) {//侧菜单栏隐藏式同时隐藏输入法
+                var manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                manager.hideSoftInputFromWindow(
+                    drawerView.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+            }
+
+        })
         weather_layout.visibility = View.VISIBLE
     }
 
